@@ -1,16 +1,21 @@
-// ... (your existing imports)
+import React, { useState, useEffect } from 'react';
+import NoteForm from './components/NotesForm';
+import PostItNote from './components/PostItNote';
 
-import NoteForm from "./components/NotesForm";
-import PostItNote from "./components/PostItNote";
+interface Note {
+  id: number;
+  title: string;
+  content: string;
+}
 
 const App: React.FC = () => {
-  const [notes, setNotes] = useState<{ id: number; title: string; content: string }[]>([]);
+  const [notes, setNotes] = useState<Note[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchNotes = async () => {
       try {
-        const storedNotes = JSON.parse(localStorage.getItem('notes') || '[]');
+        const storedNotes = JSON.parse(localStorage.getItem('notes') || '[]') as Note[];
         setNotes(storedNotes);
       } catch (error) {
         console.error('Error loading notes:', error);
@@ -23,14 +28,14 @@ const App: React.FC = () => {
   }, []);
 
   const addNote = (title: string, content: string) => {
-    const newNote = { id: Date.now(), title, content };
+    const newNote: Note = { id: Date.now(), title, content };
     const newNotes = [...notes, newNote];
     setNotes(newNotes);
     localStorage.setItem('notes', JSON.stringify(newNotes));
   };
 
   const updateNote = (id: number, newTitle: string, newContent: string) => {
-    const updatedNotes = notes.map(note =>
+    const updatedNotes = notes.map((note: Note) =>
       note.id === id ? { ...note, title: newTitle, content: newContent } : note
     );
     setNotes(updatedNotes);
@@ -38,7 +43,7 @@ const App: React.FC = () => {
   };
 
   const closeNote = (id: number) => {
-    const updatedNotes = notes.filter(note => note.id !== id);
+    const updatedNotes = notes.filter((note: Note) => note.id !== id);
     setNotes(updatedNotes);
     localStorage.setItem('notes', JSON.stringify(updatedNotes));
   };
@@ -51,14 +56,14 @@ const App: React.FC = () => {
       {loading ? (
         <p>Loading...</p>
       ) : (
-        notes.map((note) => (
+        notes.map((note: Note) => (
           <PostItNote
-            key={note.id} // Add key prop to the component
+            key={note.id}
             id={note.id}
             title={note.title}
             content={note.content}
             onClose={() => closeNote(note.id)}
-            onUpdate={(newTitle, newContent) => updateNote(note.id, newTitle, newContent)}
+            onUpdate={(id, newTitle, newContent) => updateNote(id, newTitle, newContent)} // Include id in the update function
           />
         ))
       )}

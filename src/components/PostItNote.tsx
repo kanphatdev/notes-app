@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import Close from '../icon/Close';
 
 interface PostItNoteProps {
-  id: number; // Add id property
+  id: number;
   title: string;
   content: string;
   onClose: () => void;
-  onUpdate: (newTitle: string, newContent: string) => void;
+  onUpdate: (id: number, newTitle: string, newContent: string) => void; // Include id in the onUpdate function
 }
 
 const PostItNote: React.FC<PostItNoteProps> = ({ id, title, content, onClose, onUpdate }) => {
