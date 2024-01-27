@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import Close from '../icon/Close';
+import Back from '../icon/Back';
+import ArrowDown from '../icon/ArrowDown';
+import Check from '../icon/Check';
 
 interface PostItNoteProps {
   id: number;
@@ -63,13 +66,13 @@ const PostItNote: React.FC<PostItNoteProps> = ({ id, title, content, onClose, on
                 className="text-green-500 hover:text-green-700 mr-2"
                 onClick={handleSaveClick}
               >
-                Save
+                <Check/>
               </button>
               <button
                 className="text-gray-500 hover:text-gray-700"
                 onClick={handleCancelClick}
               >
-                Cancel
+                <Back/>
               </button>
             </>
           ) : (
@@ -78,7 +81,7 @@ const PostItNote: React.FC<PostItNoteProps> = ({ id, title, content, onClose, on
                 className="text-gray-600 hover:text-blue-500 mr-2"
                 onClick={handleEditClick}
               >
-                Edit
+                <ArrowDown/>
               </button>
               <button
                 className="text-gray-600 hover:text-red-500"
