@@ -1,8 +1,7 @@
-// App.tsx
+// ... (your existing imports)
 
-import React, { useState, useEffect } from 'react';
-import NoteForm from './components/NotesForm';
-import PostItNote from './components/PostItNote';
+import NoteForm from "./components/NotesForm";
+import PostItNote from "./components/PostItNote";
 
 const App: React.FC = () => {
   const [notes, setNotes] = useState<{ id: number; title: string; content: string }[]>([]);
@@ -24,7 +23,8 @@ const App: React.FC = () => {
   }, []);
 
   const addNote = (title: string, content: string) => {
-    const newNotes = [...notes, { id: Date.now(), title, content }];
+    const newNote = { id: Date.now(), title, content };
+    const newNotes = [...notes, newNote];
     setNotes(newNotes);
     localStorage.setItem('notes', JSON.stringify(newNotes));
   };
@@ -53,7 +53,7 @@ const App: React.FC = () => {
       ) : (
         notes.map((note) => (
           <PostItNote
-            key={note.id}
+            key={note.id} // Add key prop to the component
             id={note.id}
             title={note.title}
             content={note.content}

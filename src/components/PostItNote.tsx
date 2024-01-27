@@ -1,12 +1,8 @@
-// components/PostItNote.tsx
-
 import React, { useState } from 'react';
 import Close from '../icon/Close';
-import ArrowDown from '../icon/ArrowDown';
-import Back from '../icon/Back';
 
 interface PostItNoteProps {
-  id: number;
+  id: number; // Add id property
   title: string;
   content: string;
   onClose: () => void;
@@ -23,7 +19,7 @@ const PostItNote: React.FC<PostItNoteProps> = ({ id, title, content, onClose, on
   };
 
   const handleSaveClick = () => {
-    onUpdate(newTitle, newContent);
+    onUpdate(id, newTitle, newContent); // Include id in the update function
     setEditing(false);
   };
 
@@ -43,13 +39,13 @@ const PostItNote: React.FC<PostItNoteProps> = ({ id, title, content, onClose, on
               type="text"
               value={newTitle}
               onChange={(e) => setNewTitle(e.target.value)}
-              className="text-lg font-bold mb-2 w-full p-2 rounded input "
+              className="text-lg font-bold mb-2 w-full p-2 rounded input"
               placeholder="Enter title"
             />
             <textarea
               value={newContent}
               onChange={(e) => setNewContent(e.target.value)}
-              className="text-gray-700 w-full p-2 rounded textarea "
+              className="text-gray-700 w-full p-2 rounded textarea"
               placeholder="Enter content"
               rows={4}
             />
@@ -67,13 +63,13 @@ const PostItNote: React.FC<PostItNoteProps> = ({ id, title, content, onClose, on
                 className="text-green-500 hover:text-green-700 mr-2"
                 onClick={handleSaveClick}
               >
-                 <ArrowDown/>
+                Save
               </button>
               <button
                 className="text-gray-500 hover:text-gray-700"
                 onClick={handleCancelClick}
               >
-                <Back/>
+                Cancel
               </button>
             </>
           ) : (
@@ -82,7 +78,7 @@ const PostItNote: React.FC<PostItNoteProps> = ({ id, title, content, onClose, on
                 className="text-gray-600 hover:text-blue-500 mr-2"
                 onClick={handleEditClick}
               >
-                <ArrowDown/>
+                Edit
               </button>
               <button
                 className="text-gray-600 hover:text-red-500"
