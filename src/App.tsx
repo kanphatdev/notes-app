@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import NoteForm from './components/NotesForm';
 import PostItNote from './components/PostItNote';
+import RestoreNotes from './components/RestoreNotes';
+import HistoryNotes from './components/HistoryNotes';
 
 interface Note {
   id: number;
@@ -50,23 +52,27 @@ const App: React.FC = () => {
 
   return (
     <div className="container mx-auto p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-      <div className="md:col-span-2">
+     <RestoreNotes/>
+      <div className="md:col-span-1">
         <NoteForm onSubmit={addNote} />
       </div>
-      {loading ? (
-        <p>Loading...</p>
-      ) : (
-        notes.map((note: Note) => (
-          <PostItNote
-            key={note.id}
-            id={note.id}
-            title={note.title}
-            content={note.content}
-            onClose={() => closeNote(note.id)}
-            onUpdate={(id, newTitle, newContent) => updateNote(id, newTitle, newContent)} // Include id in the update function
-          />
-        ))
-      )}
+      <HistoryNotes/>
+      <div className="md:col-span-1">
+        {loading ? (
+          <p>Loading...</p>
+        ) : (
+          notes.map((note: Note) => (
+            <PostItNote
+              key={note.id}
+              id={note.id}
+              title={note.title}
+              content={note.content}
+              onClose={() => closeNote(note.id)}
+              onUpdate={(id, newTitle, newContent) => updateNote(id, newTitle, newContent)}
+            />
+          ))
+        )}
+      </div>
     </div>
   );
 };
