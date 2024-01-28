@@ -8,8 +8,8 @@ interface PostItNoteProps {
   id: number;
   title: string;
   content: string;
-  onClose: () => void;
-  onUpdate: (id: number, newTitle: string, newContent: string) => void; // Include id in the onUpdate function
+  onClose: (id: number) => void; // Update the onClose function signature
+  onUpdate: (id: number, newTitle: string, newContent: string) => void;
 }
 
 const PostItNote: React.FC<PostItNoteProps> = ({ id, title, content, onClose, onUpdate }) => {
@@ -22,15 +22,19 @@ const PostItNote: React.FC<PostItNoteProps> = ({ id, title, content, onClose, on
   };
 
   const handleSaveClick = () => {
-    onUpdate(id, newTitle, newContent); // Include id in the update function
+    onUpdate(id, newTitle, newContent);
     setEditing(false);
   };
 
   const handleCancelClick = () => {
-    // Reset the edited values
     setNewTitle(title);
     setNewContent(content);
     setEditing(false);
+  };
+
+  const handleCloseClick = () => {
+    // Call onClose with the note id
+    onClose(id);
   };
 
   return (
@@ -85,7 +89,7 @@ const PostItNote: React.FC<PostItNoteProps> = ({ id, title, content, onClose, on
               </button>
               <button
                 className="text-gray-600 hover:text-red-500"
-                onClick={onClose}
+                onClick={handleCloseClick}
               >
                 <Close />
               </button>

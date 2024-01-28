@@ -1,14 +1,18 @@
+// App.tsx
+
 import React, { useState, useEffect } from 'react';
 import NoteForm from './components/NotesForm';
 import PostItNote from './components/PostItNote';
 import RestoreNotes from './components/RestoreNotes';
 import HistoryNotes from './components/HistoryNotes';
 
-interface Note {
+export interface Note {
   id: number;
   title: string;
   content: string;
+  restorable?: boolean; // Add this line
 }
+
 
 const App: React.FC = () => {
   const [notes, setNotes] = useState<Note[]>([]);
@@ -29,12 +33,15 @@ const App: React.FC = () => {
     fetchNotes();
   }, []);
 
-  const addNote = (title: string, content: string) => {
-    const newNote: Note = { id: Date.now(), title, content };
-    const newNotes = [...notes, newNote];
-    setNotes(newNotes);
-    localStorage.setItem('notes', JSON.stringify(newNotes));
-  };
+// App.tsx
+
+const addNote = (title: string, content: string) => {
+  const newNote: Note = { id: Date.now(), title, content, restorable: true }; // Set restorable to true
+  const newNotes = [...notes, newNote];
+  setNotes(newNotes);
+  localStorage.setItem('notes', JSON.stringify(newNotes));
+};
+
 
   const updateNote = (id: number, newTitle: string, newContent: string) => {
     const updatedNotes = notes.map((note: Note) =>
@@ -50,13 +57,23 @@ const App: React.FC = () => {
     localStorage.setItem('notes', JSON.stringify(updatedNotes));
   };
 
+  const restoreNote = (id: number) => {
+    const restoredNote = notes.find((note: Note) => note.id === id);
+    if (restoredNote) {
+      addNote(restoredNote.title, restoredNote.content);
+      closeNote(id);
+      // Update localStorage after restoring
+      localStorage.setItem('notes', JSON.stringify(notes));
+    }
+  };
+
   return (
     <div className="container mx-auto p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-     <RestoreNotes/>
+      <RestoreNotes notes={notes} onRestore={restoreNote} />
       <div className="md:col-span-1">
         <NoteForm onSubmit={addNote} />
       </div>
-      <HistoryNotes/>
+      <HistoryNotes />
       <div className="md:col-span-1">
         {loading ? (
           <p>Loading...</p>
